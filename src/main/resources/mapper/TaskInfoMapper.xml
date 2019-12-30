@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wind.sound.system.dao.mapper.TaskInfoMapper">
+    
+    <resultMap type="TaskInfo" id="TaskInfoResult">
+        <result property="id"    column="id"    />
+        <result property="taskName"    column="task_name"    />
+        <result property="groupId"    column="group_id"    />
+        <result property="price"    column="price"    />
+        <result property="wxStatus"    column="wx_status"    />
+        <result property="taskStatus"    column="task_status"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="finishTime"    column="finish_time"    />
+        <result property="stopTime"    column="stop_time"    />
+        <result property="publishTime"    column="publish_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="isDelete"    column="is_delete"    />
+    </resultMap>
+	
+	<sql id="selectTaskInfoVo">
+        select id, task_name, group_id, price, wx_status, task_status, create_time, finish_time, stop_time, publish_time, update_time, is_delete from w_task_info
+    </sql>
+	
+    <select id="selectTaskInfoList" parameterType="TaskInfo" resultMap="TaskInfoResult">
+        <include refid="selectTaskInfoVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+             <if test="taskName != null  and taskName != '' "> and task_name = #{taskName}</if>
+             <if test="groupId != null "> and group_id = #{groupId}</if>
+             <if test="price != null "> and price = #{price}</if>
+             <if test="wxStatus != null "> and wx_status = #{wxStatus}</if>
+             <if test="taskStatus != null "> and task_status = #{taskStatus}</if>
+             <if test="createTime != null "> and create_time = #{createTime}</if>
+             <if test="finishTime != null "> and finish_time = #{finishTime}</if>
+             <if test="stopTime != null "> and stop_time = #{stopTime}</if>
+             <if test="publishTime != null "> and publish_time = #{publishTime}</if>
+             <if test="updateTime != null "> and update_time = #{updateTime}</if>
+             <if test="isDelete != null "> and is_delete = #{isDelete}</if>
+         </where>
+    </select>
+    
+    <select id="selectTaskInfoById" parameterType="Long" resultMap="TaskInfoResult">
+        <include refid="selectTaskInfoVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTaskInfo" parameterType="TaskInfo">
+        insert into w_task_info
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  ">id,</if>
+			<if test="taskName != null  and taskName != ''  ">task_name,</if>
+			<if test="groupId != null  ">group_id,</if>
+			<if test="price != null  ">price,</if>
+			<if test="wxStatus != null  ">wx_status,</if>
+			<if test="taskStatus != null  ">task_status,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="finishTime != null  ">finish_time,</if>
+			<if test="stopTime != null  ">stop_time,</if>
+			<if test="publishTime != null  ">publish_time,</if>
+			<if test="updateTime != null  ">update_time,</if>
+			<if test="isDelete != null  ">is_delete,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  ">#{id},</if>
+			<if test="taskName != null  and taskName != ''  ">#{taskName},</if>
+			<if test="groupId != null  ">#{groupId},</if>
+			<if test="price != null  ">#{price},</if>
+			<if test="wxStatus != null  ">#{wxStatus},</if>
+			<if test="taskStatus != null  ">#{taskStatus},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="finishTime != null  ">#{finishTime},</if>
+			<if test="stopTime != null  ">#{stopTime},</if>
+			<if test="publishTime != null  ">#{publishTime},</if>
+			<if test="updateTime != null  ">#{updateTime},</if>
+			<if test="isDelete != null  ">#{isDelete},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTaskInfo" parameterType="TaskInfo">
+        update w_task_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="taskName != null  and taskName != ''  ">task_name = #{taskName},</if>
+            <if test="groupId != null  ">group_id = #{groupId},</if>
+            <if test="price != null  ">price = #{price},</if>
+            <if test="wxStatus != null  ">wx_status = #{wxStatus},</if>
+            <if test="taskStatus != null  ">task_status = #{taskStatus},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="finishTime != null  ">finish_time = #{finishTime},</if>
+            <if test="stopTime != null  ">stop_time = #{stopTime},</if>
+            <if test="publishTime != null  ">publish_time = #{publishTime},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="isDelete != null  ">is_delete = #{isDelete},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTaskInfoById" parameterType="Long">
+        delete from w_task_info where id = #{id}
+    </delete>
+	
+    <delete id="deleteTaskInfoByIds" parameterType="String">
+        delete from w_task_info where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

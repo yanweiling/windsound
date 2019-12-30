@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wind.sound.system.dao.mapper.TaskControlMapper">
+    
+    <resultMap type="TaskControl" id="TaskControlResult">
+        <result property="id"    column="id"    />
+        <result property="speakerTypeId"    column="speaker_type_id"    />
+        <result property="num"    column="num"    />
+        <result property="speakerType"    column="speaker_type"    />
+    </resultMap>
+	
+	<sql id="selectTaskControlVo">
+        select id, speaker_type_id, num, speaker_type from w_task_control
+    </sql>
+	
+    <select id="selectTaskControlList" parameterType="TaskControl" resultMap="TaskControlResult">
+        <include refid="selectTaskControlVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+             <if test="speakerTypeId != null "> and speaker_type_id = #{speakerTypeId}</if>
+             <if test="num != null "> and num = #{num}</if>
+             <if test="speakerType != null  and speakerType != '' "> and speaker_type = #{speakerType}</if>
+         </where>
+    </select>
+    
+    <select id="selectTaskControlById" parameterType="Long" resultMap="TaskControlResult">
+        <include refid="selectTaskControlVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTaskControl" parameterType="TaskControl">
+        insert into w_task_control
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  ">id,</if>
+			<if test="speakerTypeId != null  ">speaker_type_id,</if>
+			<if test="num != null  ">num,</if>
+			<if test="speakerType != null  and speakerType != ''  ">speaker_type,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  ">#{id},</if>
+			<if test="speakerTypeId != null  ">#{speakerTypeId},</if>
+			<if test="num != null  ">#{num},</if>
+			<if test="speakerType != null  and speakerType != ''  ">#{speakerType},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTaskControl" parameterType="TaskControl">
+        update w_task_control
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="speakerTypeId != null  ">speaker_type_id = #{speakerTypeId},</if>
+            <if test="num != null  ">num = #{num},</if>
+            <if test="speakerType != null  and speakerType != ''  ">speaker_type = #{speakerType},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTaskControlById" parameterType="Long">
+        delete from w_task_control where id = #{id}
+    </delete>
+	
+    <delete id="deleteTaskControlByIds" parameterType="String">
+        delete from w_task_control where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

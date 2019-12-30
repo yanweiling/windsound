@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wind.sound.system.dao.mapper.WordGroupMapper">
+    
+    <resultMap type="WordGroup" id="WordGroupResult">
+        <result property="id"    column="id"    />
+        <result property="wordId"    column="word_id"    />
+        <result property="groupId"    column="group_id"    />
+    </resultMap>
+	
+	<sql id="selectWordGroupVo">
+        select id, word_id, group_id from w_word_group
+    </sql>
+	
+    <select id="selectWordGroupList" parameterType="WordGroup" resultMap="WordGroupResult">
+        <include refid="selectWordGroupVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+             <if test="wordId != null "> and word_id = #{wordId}</if>
+             <if test="groupId != null "> and group_id = #{groupId}</if>
+         </where>
+    </select>
+    
+    <select id="selectWordGroupById" parameterType="Long" resultMap="WordGroupResult">
+        <include refid="selectWordGroupVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertWordGroup" parameterType="WordGroup">
+        insert into w_word_group
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  ">id,</if>
+			<if test="wordId != null  ">word_id,</if>
+			<if test="groupId != null  ">group_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  ">#{id},</if>
+			<if test="wordId != null  ">#{wordId},</if>
+			<if test="groupId != null  ">#{groupId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateWordGroup" parameterType="WordGroup">
+        update w_word_group
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="wordId != null  ">word_id = #{wordId},</if>
+            <if test="groupId != null  ">group_id = #{groupId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteWordGroupById" parameterType="Long">
+        delete from w_word_group where id = #{id}
+    </delete>
+	
+    <delete id="deleteWordGroupByIds" parameterType="String">
+        delete from w_word_group where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

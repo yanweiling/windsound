@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wind.sound.system.dao.mapper.TaskVideoResourceMapper">
+    
+    <resultMap type="TaskVideoResource" id="TaskVideoResourceResult">
+        <result property="id"    column="id"    />
+        <result property="taskId"    column="task_id"    />
+        <result property="wordGroupId"    column="word_group_id"    />
+        <result property="wordId"    column="word_id"    />
+        <result property="taskAssignId"    column="task_assign_id"    />
+        <result property="uploadTime"    column="upload_time"    />
+        <result property="videoUrl"    column="video_url"    />
+        <result property="isAsrKnown"    column="is_asr_known"    />
+        <result property="reCheckStatus"    column="re_check_status"    />
+        <result property="vidoStatus"    column="vido_status"    />
+        <result property="isDelete"    column="is_delete"    />
+    </resultMap>
+	
+	<sql id="selectTaskVideoResourceVo">
+        select id, task_id, word_group_id, word_id, task_assign_id, upload_time, video_url, is_asr_known, re_check_status, vido_status, is_delete from w_task_video_resource
+    </sql>
+	
+    <select id="selectTaskVideoResourceList" parameterType="TaskVideoResource" resultMap="TaskVideoResourceResult">
+        <include refid="selectTaskVideoResourceVo"/>
+        <where>  
+            <if test="id != null  and id != '' "> and id = #{id}</if>
+             <if test="taskId != null "> and task_id = #{taskId}</if>
+             <if test="wordGroupId != null "> and word_group_id = #{wordGroupId}</if>
+             <if test="wordId != null "> and word_id = #{wordId}</if>
+             <if test="taskAssignId != null "> and task_assign_id = #{taskAssignId}</if>
+             <if test="uploadTime != null "> and upload_time = #{uploadTime}</if>
+             <if test="videoUrl != null  and videoUrl != '' "> and video_url = #{videoUrl}</if>
+             <if test="isAsrKnown != null "> and is_asr_known = #{isAsrKnown}</if>
+             <if test="reCheckStatus != null "> and re_check_status = #{reCheckStatus}</if>
+             <if test="vidoStatus != null "> and vido_status = #{vidoStatus}</if>
+             <if test="isDelete != null "> and is_delete = #{isDelete}</if>
+         </where>
+    </select>
+    
+    <select id="selectTaskVideoResourceById" parameterType="String" resultMap="TaskVideoResourceResult">
+        <include refid="selectTaskVideoResourceVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTaskVideoResource" parameterType="TaskVideoResource">
+        insert into w_task_video_resource
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">id,</if>
+			<if test="taskId != null  ">task_id,</if>
+			<if test="wordGroupId != null  ">word_group_id,</if>
+			<if test="wordId != null  ">word_id,</if>
+			<if test="taskAssignId != null  ">task_assign_id,</if>
+			<if test="uploadTime != null  ">upload_time,</if>
+			<if test="videoUrl != null  and videoUrl != ''  ">video_url,</if>
+			<if test="isAsrKnown != null  ">is_asr_known,</if>
+			<if test="reCheckStatus != null  ">re_check_status,</if>
+			<if test="vidoStatus != null  ">vido_status,</if>
+			<if test="isDelete != null  ">is_delete,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">#{id},</if>
+			<if test="taskId != null  ">#{taskId},</if>
+			<if test="wordGroupId != null  ">#{wordGroupId},</if>
+			<if test="wordId != null  ">#{wordId},</if>
+			<if test="taskAssignId != null  ">#{taskAssignId},</if>
+			<if test="uploadTime != null  ">#{uploadTime},</if>
+			<if test="videoUrl != null  and videoUrl != ''  ">#{videoUrl},</if>
+			<if test="isAsrKnown != null  ">#{isAsrKnown},</if>
+			<if test="reCheckStatus != null  ">#{reCheckStatus},</if>
+			<if test="vidoStatus != null  ">#{vidoStatus},</if>
+			<if test="isDelete != null  ">#{isDelete},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTaskVideoResource" parameterType="TaskVideoResource">
+        update w_task_video_resource
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="taskId != null  ">task_id = #{taskId},</if>
+            <if test="wordGroupId != null  ">word_group_id = #{wordGroupId},</if>
+            <if test="wordId != null  ">word_id = #{wordId},</if>
+            <if test="taskAssignId != null  ">task_assign_id = #{taskAssignId},</if>
+            <if test="uploadTime != null  ">upload_time = #{uploadTime},</if>
+            <if test="videoUrl != null  and videoUrl != ''  ">video_url = #{videoUrl},</if>
+            <if test="isAsrKnown != null  ">is_asr_known = #{isAsrKnown},</if>
+            <if test="reCheckStatus != null  ">re_check_status = #{reCheckStatus},</if>
+            <if test="vidoStatus != null  ">vido_status = #{vidoStatus},</if>
+            <if test="isDelete != null  ">is_delete = #{isDelete},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTaskVideoResourceById" parameterType="String">
+        delete from w_task_video_resource where id = #{id}
+    </delete>
+	
+    <delete id="deleteTaskVideoResourceByIds" parameterType="String">
+        delete from w_task_video_resource where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

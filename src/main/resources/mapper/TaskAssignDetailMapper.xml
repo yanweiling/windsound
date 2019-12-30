@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wind.sound.system.dao.mapper.TaskAssignDetailMapper">
+    
+    <resultMap type="TaskAssignDetail" id="TaskAssignDetailResult">
+        <result property="id"    column="id"    />
+        <result property="taskId"    column="task_id"    />
+        <result property="wxuserId"    column="wxuser_id"    />
+        <result property="wordId"    column="word_id"    />
+        <result property="wordContent"    column="word_content"    />
+        <result property="isUpload"    column="is_upload"    />
+        <result property="resourceId"    column="resource_id"    />
+        <result property="isDelete"    column="is_delete"    />
+    </resultMap>
+	
+	<sql id="selectTaskAssignDetailVo">
+        select id, task_id, wxuser_id, word_id, word_content, is_upload, resource_id, is_delete from w_task_assign_detail
+    </sql>
+	
+    <select id="selectTaskAssignDetailList" parameterType="TaskAssignDetail" resultMap="TaskAssignDetailResult">
+        <include refid="selectTaskAssignDetailVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+             <if test="taskId != null "> and task_id = #{taskId}</if>
+             <if test="wxuserId != null  and wxuserId != '' "> and wxuser_id = #{wxuserId}</if>
+             <if test="wordId != null "> and word_id = #{wordId}</if>
+             <if test="wordContent != null  and wordContent != '' "> and word_content = #{wordContent}</if>
+             <if test="isUpload != null "> and is_upload = #{isUpload}</if>
+             <if test="resourceId != null  and resourceId != '' "> and resource_id = #{resourceId}</if>
+             <if test="isDelete != null "> and is_delete = #{isDelete}</if>
+         </where>
+    </select>
+    
+    <select id="selectTaskAssignDetailById" parameterType="Long" resultMap="TaskAssignDetailResult">
+        <include refid="selectTaskAssignDetailVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTaskAssignDetail" parameterType="TaskAssignDetail">
+        insert into w_task_assign_detail
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  ">id,</if>
+			<if test="taskId != null  ">task_id,</if>
+			<if test="wxuserId != null  and wxuserId != ''  ">wxuser_id,</if>
+			<if test="wordId != null  ">word_id,</if>
+			<if test="wordContent != null  and wordContent != ''  ">word_content,</if>
+			<if test="isUpload != null  ">is_upload,</if>
+			<if test="resourceId != null  and resourceId != ''  ">resource_id,</if>
+			<if test="isDelete != null  ">is_delete,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  ">#{id},</if>
+			<if test="taskId != null  ">#{taskId},</if>
+			<if test="wxuserId != null  and wxuserId != ''  ">#{wxuserId},</if>
+			<if test="wordId != null  ">#{wordId},</if>
+			<if test="wordContent != null  and wordContent != ''  ">#{wordContent},</if>
+			<if test="isUpload != null  ">#{isUpload},</if>
+			<if test="resourceId != null  and resourceId != ''  ">#{resourceId},</if>
+			<if test="isDelete != null  ">#{isDelete},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTaskAssignDetail" parameterType="TaskAssignDetail">
+        update w_task_assign_detail
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="taskId != null  ">task_id = #{taskId},</if>
+            <if test="wxuserId != null  and wxuserId != ''  ">wxuser_id = #{wxuserId},</if>
+            <if test="wordId != null  ">word_id = #{wordId},</if>
+            <if test="wordContent != null  and wordContent != ''  ">word_content = #{wordContent},</if>
+            <if test="isUpload != null  ">is_upload = #{isUpload},</if>
+            <if test="resourceId != null  and resourceId != ''  ">resource_id = #{resourceId},</if>
+            <if test="isDelete != null  ">is_delete = #{isDelete},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTaskAssignDetailById" parameterType="Long">
+        delete from w_task_assign_detail where id = #{id}
+    </delete>
+	
+    <delete id="deleteTaskAssignDetailByIds" parameterType="String">
+        delete from w_task_assign_detail where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

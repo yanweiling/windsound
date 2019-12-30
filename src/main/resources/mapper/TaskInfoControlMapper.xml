@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wind.sound.system.dao.mapper.TaskInfoControlMapper">
+    
+    <resultMap type="TaskInfoControl" id="TaskInfoControlResult">
+        <result property="id"    column="id"    />
+        <result property="taskId"    column="task_id"    />
+        <result property="taskControlId"    column="task_control_id"    />
+    </resultMap>
+	
+	<sql id="selectTaskInfoControlVo">
+        select id, task_id, task_control_id from w_task_info_control
+    </sql>
+	
+    <select id="selectTaskInfoControlList" parameterType="TaskInfoControl" resultMap="TaskInfoControlResult">
+        <include refid="selectTaskInfoControlVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+             <if test="taskId != null "> and task_id = #{taskId}</if>
+             <if test="taskControlId != null "> and task_control_id = #{taskControlId}</if>
+         </where>
+    </select>
+    
+    <select id="selectTaskInfoControlById" parameterType="Long" resultMap="TaskInfoControlResult">
+        <include refid="selectTaskInfoControlVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTaskInfoControl" parameterType="TaskInfoControl">
+        insert into w_task_info_control
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  ">id,</if>
+			<if test="taskId != null  ">task_id,</if>
+			<if test="taskControlId != null  ">task_control_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  ">#{id},</if>
+			<if test="taskId != null  ">#{taskId},</if>
+			<if test="taskControlId != null  ">#{taskControlId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTaskInfoControl" parameterType="TaskInfoControl">
+        update w_task_info_control
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="taskId != null  ">task_id = #{taskId},</if>
+            <if test="taskControlId != null  ">task_control_id = #{taskControlId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTaskInfoControlById" parameterType="Long">
+        delete from w_task_info_control where id = #{id}
+    </delete>
+	
+    <delete id="deleteTaskInfoControlByIds" parameterType="String">
+        delete from w_task_info_control where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>
